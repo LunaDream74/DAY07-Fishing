@@ -1,4 +1,4 @@
-"""Script thực thi đánh giá benchmark cho FixedSizeChunker (Thủ nghiệm cá nhân Hieu)."""
+"""Script thực thi đánh giá benchmark cho FixedSizeChunker (Thử nghiệm cá nhân Hieu)."""
 
 from __future__ import annotations
 
@@ -13,37 +13,37 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from experiments.hieu.config import CHUNKER, build_store
 from scripts.benchmark import evaluate_store, generate_markdown_report
-from src.embeddings import LocalEmbedder, MockEmbedder
+from src.embeddings import MockEmbedder, LocalEmbedder
 
 
 def get_embedder():
-    """Lấy embedder dựa trên môi trường hoặc fallback."""
-    provider = os.getenv("EMBEDDING_PROVIDER", "local").lower()
+    """Lấy embedder dựa trên biến môi trường EMBEDDING_PROVIDER (mặc định mock để chạy tức thì)."""
+    provider = os.getenv("EMBEDDING_PROVIDER", "mock").lower()
     if provider == "local":
         try:
-            print("[INFO] Dang khoi tao LocalEmbedder (sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2)...")
-            embedder = LocalEmbedder()
-            print("[OK] Su dung LocalEmbedder thanh cong.")
-            return embedder
+            print("[INFO] Dang khoi tao LocalEmbedder...")
+            return LocalEmbedder()
         except Exception as err:
             print(f"[WARN] Khong the tai LocalEmbedder ({err}). Chuyen sang MockEmbedder fallback.")
             return MockEmbedder()
-    else:
-        print("[INFO] Su dung MockEmbedder theo cau hinh moi truong.")
-        return MockEmbedder()
-
+    print("[INFO] Su dung MockEmbedder (Deterministic fast embedder).")
+    return MockEmbedder()
 
 
 def main():
     embedder = get_embedder()
-    print("[INFO] Dang nap du lieu va xay dung Vector Store voi FixedSizeChunker(chunk_size=400, overlap=50)...")
+    print(f"[INFO] Dang nap du lieu va xay dung Vector Store voi FixedSizeChunker(chunk_size={CHUNKER.chunk_size}, overlap={CHUNKER.overlap})...")
     store = build_store(embedder)
-    print(f"[OK] Vector Store hoan tat. Tong so chunks: {store.get_collection_size()}")
+    total_chunks = store.get_collection_size()
+    print(f"[OK] Vector Store hoan tat. Tong so chunks tao ra: {total_chunks}")
 
     print("[INFO] Dang chay bo danh gia 5 Benchmark Queries...")
     summary = evaluate_store(store, top_k=3)
 
-    report_md = generate_markdown_report(summary, store_name=f"FixedSizeChunker (size={CHUNKER.chunk_size}, overlap={CHUNKER.overlap})")
+    report_md = generate_markdown_report(
+        summary,
+        store_name=f"FixedSizeChunker (size={CHUNKER.chunk_size}, overlap={CHUNKER.overlap})"
+    )
 
     # Lưu log vào my_workspace/logs/
     log_dir = PROJECT_ROOT / "my_workspace" / "logs"
@@ -59,9 +59,17 @@ total_score: {summary.total_score}
 hit_rate_at_1: {summary.hit_rate_at_1}
 hit_rate_at_3: {summary.hit_rate_at_3}
 filter_accuracy: {summary.filter_accuracy}
+total_chunks: {total_chunks}
 ---
 
 {report_md}
+
+## 4. Phân Tích Đặc Tính Thuật Toán FixedSizeChunker
+- **Kích thước Cửa Sổ (Chunk Size)**: {CHUNKER.chunk_size} ký tự.
+- **Độ Chồng Chéo (Overlap)**: {CHUNKER.overlap} ký tự.
+- **Tổng số Chunks sinh ra**: {total_chunks} chunks.
+- **Ưu điểm**: Thuật toán đơn giản, tốc độ xử lý nhanh, đảm bảo độ dài mỗi chunk không vượt quá `chunk_size`.
+- **Hạn chế (Failure Analysis)**: Do cắt theo chiều dài ký tự cố định mà không quan tâm đến ranh giới từ/câu, nhiều từ và câu bị cắt đôi giữa chừng. Điều này làm suy giảm tính toàn vẹn ngữ nghĩa của chunk khi so sánh độ tương tự với các câu hỏi Benchmark.
 """
     log_file.write_text(log_content, encoding="utf-8")
     print(f"[OK] Da luu bao cao benchmark vao: {log_file}")
@@ -70,8 +78,8 @@ filter_accuracy: {summary.filter_accuracy}
     print(f"   - Hit Rate @ 1: {summary.hit_rate_at_1 * 100:.1f}%")
     print(f"   - Hit Rate @ 3: {summary.hit_rate_at_3 * 100:.1f}%")
     print(f"   - Metadata Filter Accuracy: {summary.filter_accuracy * 100:.1f}%")
+    print(f"   - Total Chunks: {total_chunks}")
     print("=" * 60)
-
 
 
 if __name__ == "__main__":
