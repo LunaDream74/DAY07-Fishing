@@ -1,0 +1,12 @@
+{
+  "hust-course-registration-20261": {"service_domain": "academic", "document_type": "term-schedule", "validity_scope": "term-specific"},
+  "hust-international-student-exchange": {"service_domain": "international", "document_type": "eligibility-guide", "validity_scope": "ongoing"},
+  "hust-math-course-supplementary-registration": {"service_domain": "academic", "document_type": "exception-procedure", "validity_scope": "term-specific"},
+  "hust-scholarships": {"service_domain": "finance", "document_type": "service-overview", "validity_scope": "annual"},
+  "hust-student-administrative-procedures": {"service_domain": "administration", "document_type": "procedure", "validity_scope": "ongoing"},
+  "hust-student-affairs": {"service_domain": "support", "document_type": "service-overview", "validity_scope": "ongoing"},
+  "hust-student-clubs": {"service_domain": "student-life", "document_type": "activity-directory", "validity_scope": "ongoing"},
+  "hust-student-exchange-policy": {"service_domain": "international", "document_type": "policy", "validity_scope": "ongoing"},
+  "hust-tran-dai-nghia-scholarship": {"service_domain": "finance", "document_type": "eligibility-policy", "validity_scope": "ongoing"},
+  "hust-tuition-information": {"service_domain": "finance", "document_type": "information-page", "validity_scope": "academic-year"}
+}
