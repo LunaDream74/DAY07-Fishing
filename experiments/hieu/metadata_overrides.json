@@ -1,0 +1,52 @@
+{
+  "hust-course-registration-20261": {
+    "category": "academic",
+    "department": "Dao Tao",
+    "target_degree": "undergraduate"
+  },
+  "hust-international-student-exchange": {
+    "category": "exchange",
+    "department": "Hợp tác Quốc tế",
+    "target_degree": "undergraduate"
+  },
+  "hust-math-course-supplementary-registration": {
+    "category": "academic",
+    "department": "Viện Toán",
+    "target_degree": "undergraduate"
+  },
+  "hust-scholarships": {
+    "category": "scholarship",
+    "department": "Công tác Sinh viên",
+    "target_degree": "undergraduate"
+  },
+  "hust-student-administrative-procedures": {
+    "category": "administrative",
+    "department": "Công tác Sinh viên",
+    "target_degree": "undergraduate"
+  },
+  "hust-student-affairs": {
+    "category": "administrative",
+    "department": "Công tác Sinh viên",
+    "target_degree": "undergraduate"
+  },
+  "hust-student-clubs": {
+    "category": "activities",
+    "department": "Đoàn Thanh niên",
+    "target_degree": "undergraduate"
+  },
+  "hust-student-exchange-policy": {
+    "category": "exchange",
+    "department": "Hợp tác Quốc tế",
+    "target_degree": "undergraduate"
+  },
+  "hust-tran-dai-nghia-scholarship": {
+    "category": "scholarship",
+    "department": "Công tác Sinh viên",
+    "target_degree": "undergraduate"
+  },
+  "hust-tuition-information": {
+    "category": "finance",
+    "department": "Tài chính Kế toán",
+    "target_degree": "undergraduate"
+  }
+}
