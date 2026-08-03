@@ -104,17 +104,24 @@ OK
 Chạy **5 câu hỏi đánh giá của nhóm** trên mã nguồn cá nhân của bạn trong gói `src`. **5 câu hỏi này phải trùng với các thành viên cùng nhóm** (xem `REPORT_NHOM.md`).
 
 | # | Câu hỏi (Query) | Top-1 Chunk truy xuất được (tóm tắt) | Điểm Score | Có liên quan không? (Relevant) | Câu trả lời của Agent (tóm tắt) |
-|---|-------|--------------------------------|-------|-----------|------------------------|
-| 1 | Chờ 5 benchmark queries chung của nhóm | — | — | — | — |
-| 2 | Chờ 5 benchmark queries chung của nhóm | — | — | — | — |
-| 3 | Chờ 5 benchmark queries chung của nhóm | — | — | — | — |
-| 4 | Chờ 5 benchmark queries chung của nhóm | — | — | — | — |
-| 5 | Chờ 5 benchmark queries chung của nhóm | — | — | — | — |
+|---|---|---|---|---|---|
+| 1 | Thời hạn và các đợt đăng ký học phần kỳ 1 năm học 2026-2027 diễn ra khi nào? | Top-1 chunk từ `hust-course-registration-20261` chứa lịch đăng ký chính thức, điều chỉnh và đăng ký thêm. | 2.0 / 2.0 | Có | Agent có thể trả lời chính xác về thời hạn đăng ký học phần. |
+| 2 | Điều kiện và đối tượng được xét trao Học bổng Trần Đại Nghĩa là gì? | Top-1 chunk là `hust-scholarships`, chứa nội dung chung về học bổng Trần Đại Nghĩa và đối tượng xét tuyển. | 1.0 / 2.0 | Có | Agent tìm được thông tin học bổng, nhưng top-1 chunk là một trang tổng hợp học bổng. |
+| 3 | Thông báo đăng ký bổ sung học phần môn Toán kỳ 2025.2 yêu cầu sinh viên thực hiện như thế nào? | Top-1 chunk là `hust-course-registration-20261`, chứa thông tin đăng ký học phần và hướng dẫn đăng ký trực tuyến. | 1.0 / 2.0 | Có | Agent đã truy xuất được hướng dẫn đăng ký bổ sung, mặc dù target doc xếp ở #2. |
+| 4 | Quy trình xin ký xác nhận các thủ tục hành chính cho sinh viên tại trường như thế nào? | Top-1 chunk từ `hust-student-administrative-procedures` chứa các thủ tục hành chính cần xác nhận. | 2.0 / 2.0 | Có | Agent truy xuất chính xác quy trình ký xác nhận thủ tục hành chính. |
+| 5 | Các mức học phí và quy định đóng học phí áp dụng cho sinh viên là gì? | Top-1 chunk từ `hust-tuition-information` chứa mức học phí và quy định đóng học phí. | 2.0 / 2.0 | Có | Agent trả lời được nội dung học phí và quy định kèm theo. |
 
-**Bao nhiêu câu hỏi trả về chunk có liên quan trong top-3?** Chờ đánh giá chung của nhóm.
+**Tổng kết benchmark**
+- Hit Rate @1: 60% (3/5 câu hỏi có target doc xếp hạng #1).
+- Hit Rate @3: 100% (5/5 câu hỏi có target doc trong top-3).
+- Tổng điểm benchmark: 8.0 / 10.0.
+- Metadata filter accuracy: 100%.
+
+**Bao nhiêu câu hỏi trả về chunk có liên quan trong top-3?**
+- 5 / 5 câu hỏi (100% có target doc trong top-3), cho thấy thuật toán chunking và embedding hoạt động tốt với bộ dữ liệu benchmark này.
 
 **Điều hay nhất tôi học được từ thành viên khác / nhóm khác (qua demo):**
-> Chờ hoàn thành demo và so sánh cùng nhóm.
+> Kết quả benchmark cho thấy top-1 không phải lúc nào cũng là target doc mặc dù nội dung liên quan; điều này nhắc tôi cần kiểm tra thêm chất lượng chunking và prompt khi kết hợp nhiều chunk để tăng độ chính xác trả lời.
 
 ---
 
