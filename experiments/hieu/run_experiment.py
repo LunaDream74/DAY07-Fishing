@@ -17,17 +17,20 @@ from src.embeddings import MockEmbedder, LocalEmbedder
 
 
 def get_embedder():
-    """Lấy embedder dựa trên biến môi trường EMBEDDING_PROVIDER (mặc định mock để chạy tức thì)."""
-    provider = os.getenv("EMBEDDING_PROVIDER", "mock").lower()
+    """Lấy embedder dựa trên biến môi trường EMBEDDING_PROVIDER (dùng LocalEmbedder từ HuggingFace)."""
+    provider = os.getenv("EMBEDDING_PROVIDER", "local").lower()
     if provider == "local":
         try:
-            print("[INFO] Dang khoi tao LocalEmbedder...")
-            return LocalEmbedder()
+            print("[INFO] Dang khoi tao LocalEmbedder (sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2)...")
+            embedder = LocalEmbedder()
+            print(f"[OK] Khoi tao thanh cong LocalEmbedder: {embedder.model_name}")
+            return embedder
         except Exception as err:
             print(f"[WARN] Khong the tai LocalEmbedder ({err}). Chuyen sang MockEmbedder fallback.")
             return MockEmbedder()
     print("[INFO] Su dung MockEmbedder (Deterministic fast embedder).")
     return MockEmbedder()
+
 
 
 def main():
