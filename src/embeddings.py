@@ -29,20 +29,36 @@ class MockEmbedder:
 
 
 class LocalEmbedder:
-    """Sentence Transformers-backed local embedder."""
+    """Sentence Transformers-backed local embedder with memory safety."""
 
-    def __init__(self, model_name: str = LOCAL_EMBEDDING_MODEL) -> None:
+    def __init__(self, model_name: str = "sentence-transformers/all-MiniLM-L6-v2") -> None:
+        try:
+            import torch
+            torch.set_num_threads(2)
+        except Exception:
+            pass
+
         from sentence_transformers import SentenceTransformer
 
         self.model_name = model_name
         self._backend_name = model_name
-        self.model = SentenceTransformer(model_name)
+        try:
+            self.model = SentenceTransformer(model_name, device="cpu")
+        except Exception:
+            self.model = SentenceTransformer(LOCAL_EMBEDDING_MODEL, device="cpu")
+
 
     def __call__(self, text: str) -> list[float]:
-        embedding = self.model.encode(text, normalize_embeddings=True)
+        try:
+            import torch
+            with torch.no_grad():
+                embedding = self.model.encode(text, normalize_embeddings=True, show_progress_bar=False)
+        except Exception:
+            embedding = self.model.encode(text, normalize_embeddings=True, show_progress_bar=False)
         if hasattr(embedding, "tolist"):
             return embedding.tolist()
         return [float(value) for value in embedding]
+
 
 
 class OpenAIEmbedder:
